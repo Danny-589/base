@@ -16,7 +16,7 @@ def crear_ventana_titulo(titulo):
     ventana_aux.geometry("750x400")
     ventana_aux.grab_set()  # Evita que se pueda interactuar con la ventana principal
     ventana_aux.configure(bg="lightblue")
-    ventana_aux.resizable(False, False)
+    ventana_aux.resizable(True, True)
     return ventana_aux
 
 #Método para crear la interfaz para agragar clientes
@@ -55,9 +55,16 @@ def agregar_cliente():
     entry_fecha_nac.grid(row=3, column=3, padx=10, pady=10)
     
     ctk.CTkButton(ventana_agregar, text="Guardar", command=lambda:
-    guardar_datos("Agregar", entry_cedula.get(),entry_nombres.get(),
-                  entry_apellidos.get(),entry_sexo.get(),entry_direccion.get(),
-                  entry_telefono.get(),entry_correo.get(),entry_fecha_nac.get())).grid(row=4, column=0, columnspan=4, pady=10)
+    guardar_datos("Agregar", 
+                  entry_cedula.get(),
+                  entry_nombres.get(),
+                  entry_apellidos.get(),
+                  entry_sexo.get(),
+                  entry_direccion.get(),
+                  entry_telefono.get(),
+                  entry_correo.get(),
+                  entry_fecha_nac.get())).grid(
+                      row=4, column=0, columnspan=4, pady=10)
 
 #Método para crear la interfaz para modificar clientes
 def modificar_cliente():
@@ -99,9 +106,17 @@ def modificar_cliente():
     entry_fecha_nac.grid(row=4, column=1, padx=80, pady=10)
     
     ctk.CTkButton(ventana_modificar, text="Guardar", command=lambda:
-    guardar_datos("Modificar", entry_id.get(),entry_cedula.get(),entry_nombres.get(),
-                  entry_apellidos.get(),entry_sexo.get(),entry_direccion.get(),
-                  entry_telefono.get(),entry_correo.get(),entry_fecha_nac.get())).grid(row=5, column=0, columnspan=4, pady=10)
+    guardar_datos("Modificar",
+                  entry_cedula.get(),
+                  entry_nombres.get(),
+                  entry_apellidos.get(),
+                  entry_sexo.get(),
+                  entry_direccion.get(),
+                  entry_telefono.get(),
+                  entry_correo.get(),
+                  entry_fecha_nac.get(),
+                  entry_id.get()
+                  )).grid(row=5, column=0, columnspan=4, pady=10)
 
 #Método para Cargar datos del cliente
     def cargar_dato_cliente():
@@ -147,24 +162,48 @@ def modificar_cliente():
 def eliminar_cliente():
     ventana_agregar=crear_ventana_titulo("Eliminar Cliente")
     ctk.CTkLabel(ventana_agregar, text="Id del cliente que desea borrar:").grid(row=0, column=0, padx=10, pady=5)
+    
     entry_id=ctk.CTkEntry(ventana_agregar)
     entry_id.grid(row=0, column=1, padx=10, pady=5)
     ctk.CTkButton(ventana_agregar, text="Confirmar", command=lambda:
     eliminar_datos("Eliminar", entry_id.get())).grid(row=1, column=0, columnspan=2, pady=10)
 
 
-def guardar_datos(accion, cedula=None, nombres=None, apellidos=None, sexo=None, 
-                  direccion=None, telefono=None, correo=None, fecha_nac=None, id=None):
+def guardar_datos(accion, 
+                  cedula=None, 
+                  nombres=None, 
+                  apellidos=None, 
+                  sexo=None, 
+                  direccion=None, 
+                  telefono=None, 
+                  correo=None, 
+                  fecha_nac=None, 
+                  id=None):
     if accion=="Agregar":
         if cedula and nombres and apellidos and sexo and direccion and telefono and correo and fecha_nac:
-            agregar_cliente_db(cedula, nombres, apellidos, sexo, direccion, telefono, correo, fecha_nac)
+            agregar_cliente_db(cedula, 
+                               nombres, 
+                               apellidos, 
+                               sexo, 
+                               direccion, 
+                               telefono, 
+                               correo, 
+                               fecha_nac)
             messagebox.showinfo("Éxito", "Cliente agregado correctamente")
         else:
             messagebox.showwarning("Error", "Faltan datos para modigicar cliente")
 
     elif accion=="Modificar":   
         if cedula and nombres and apellidos and sexo and direccion and telefono and correo and fecha_nac and id:
-            modificar_cliente_db(cedula, nombres, apellidos, sexo, direccion, telefono, correo, fecha_nac, id)
+            modificar_cliente_db(cedula, 
+                                 nombres, 
+                                 apellidos, 
+                                 sexo, 
+                                 direccion, 
+                                 telefono, 
+                                 correo, 
+                                 fecha_nac, 
+                                 id)
             messagebox.showinfo("Éxito", "Cliente modificado correctamente")
 
 def eliminar_datos(accion, id=None):
@@ -178,55 +217,79 @@ def eliminar_datos(accion, id=None):
 #Método para crear la interfaz para agragar autos
 def agregar_autos():
     ventana_agregar_auto=crear_ventana_titulo("Agregar Auto")
-    ctk.CTkLabel(ventana_agregar_auto, text="Código:").grid(row=0, column=0, padx=10, pady=10)
-    entry_código=ctk.CTkEntry(ventana_agregar_auto)
-    entry_código.grid(row=0, column=1, padx=80, pady=10)
 
-    ctk.CTkLabel(ventana_agregar_auto, text="Matrícula:").grid(row=0, column=2, padx=10, pady=10)
-    entry_matrícula=ctk.CTkEntry(ventana_agregar_auto)
-    entry_matrícula.grid(row=0, column=3, padx=10, pady=10)
+    contenedor=ctk.CTkFrame(ventana_agregar_auto)
+    contenedor.pack(expand=True, fill="both", padx=100, pady=20)
 
-    ctk.CTkLabel(ventana_agregar_auto, text="Descripción:").grid(row=1, column=0, padx=10, pady=10)
-    entry_descripción=ctk.CTkEntry(ventana_agregar_auto)
-    entry_descripción.grid(row=1, column=1, padx=80, pady=10)
+    contenedor.grid_columnconfigure(0, weight=1)
+    contenedor.grid_columnconfigure(1, weight=2)
+    contenedor.grid_columnconfigure(2, weight=1)
+    contenedor.grid_columnconfigure(3, weight=2)
 
-    ctk.CTkLabel(ventana_agregar_auto, text="Marca:").grid(row=1, column=2, padx=10, pady=10)
-    entry_marca=ctk.CTkEntry(ventana_agregar_auto)
-    entry_marca.grid(row=1, column=3, padx=10, pady=10)
+    ctk.CTkLabel(contenedor, text="Código:").grid(row=0, column=0, padx=10, pady=10, sticky="e")
 
-    ctk.CTkLabel(ventana_agregar_auto, text="Tipo:").grid(row=2, column=0, padx=10, pady=10)
-    entry_tipo=ctk.CTkEntry(ventana_agregar_auto)
-    entry_tipo.grid(row=2, column=1, padx=80, pady=10)
+    entry_código=ctk.CTkEntry(contenedor)
+    entry_código.grid(row=0, column=1, padx=5, pady=10, sticky="ew")
 
-    ctk.CTkLabel(ventana_agregar_auto, text="Modelo:").grid(row=2, column=2, padx=10, pady=10)
-    entry_modelo=ctk.CTkEntry(ventana_agregar_auto)
-    entry_modelo.grid(row=2, column=3, padx=10, pady=10)
 
-    ctk.CTkLabel(ventana_agregar_auto, text="Color 1:").grid(row=3, column=0, padx=10, pady=10)
-    entry_color_1=ctk.CTkEntry(ventana_agregar_auto)
-    entry_color_1.grid(row=3, column=1, padx=80, pady=10)
+    ctk.CTkLabel(contenedor, text="Matrícula:").grid(row=0, column=2, padx=(50, 10), pady=10, sticky="e")
+    
+    entry_matrícula=ctk.CTkEntry(contenedor)
+    entry_matrícula.grid(row=0, column=3, padx=5, pady=10, sticky="ew")
 
-    ctk.CTkLabel(ventana_agregar_auto, text="Color 2:").grid(row=3, column=2, padx=10, pady=10)
-    entry_color_2=ctk.CTkEntry(ventana_agregar_auto)
-    entry_color_2.grid(row=3, column=3, padx=10, pady=10)
+    ctk.CTkLabel(contenedor, text="Descripción:").grid(row=1, column=0, padx=10, pady=10, sticky="e")
+    entry_descripción=ctk.CTkEntry(contenedor)
+    entry_descripción.grid(row=1, column=1, padx=5, pady=10, sticky="ew")
 
-    ctk.CTkLabel(ventana_agregar_auto, text="Número de pasajeros:").grid(row=4, column=0, padx=10, pady=10)
-    entry_nro_pasajeros=ctk.CTkEntry(ventana_agregar_auto)
-    entry_nro_pasajeros.grid(row=4, column=1, padx=80, pady=10)
+    ctk.CTkLabel(contenedor, text="Marca:").grid(row=1, column=2, padx=(50, 10), pady=10, sticky="e")
+    entry_marca=ctk.CTkEntry(contenedor)
+    entry_marca.grid(row=1, column=3, padx=5, pady=10, sticky="ew")
 
-    ctk.CTkLabel(ventana_agregar_auto, text="Año de fabricación:").grid(row=4, column=2, padx=10, pady=10)
-    entry_año_auto=ctk.CTkEntry(ventana_agregar_auto)
-    entry_año_auto.grid(row=4, column=3, padx=10, pady=10)
+    ctk.CTkLabel(contenedor, text="Tipo:").grid(row=2, column=0, padx=10, pady=10, sticky="e")
+    entry_tipo=ctk.CTkEntry(contenedor)
+    entry_tipo.grid(row=2, column=1, padx=5, pady=10, sticky="ew")
 
-    ctk.CTkLabel(ventana_agregar_auto, text="Tipo de combustible:").grid(row=5, column=0, padx=10, pady=10)
-    entry_combustible=ctk.CTkEntry(ventana_agregar_auto)
-    entry_combustible.grid(row=5, column=1, padx=80, pady=10)
+    ctk.CTkLabel(contenedor, text="Modelo:").grid(row=2, column=2, padx=(50, 10), pady=10, sticky="e")
+    entry_modelo=ctk.CTkEntry(contenedor)
+    entry_modelo.grid(row=2, column=3, padx=5, pady=10, sticky="ew")
 
-    ctk.CTkButton(ventana_agregar_auto, text="Guardar", command=lambda:
-    guardar_datos_auto("Agregar", entry_código.get(),entry_matrícula.get(), 
-                        entry_descripción.get(),entry_marca.get(),entry_tipo.get(), 
-                        entry_modelo.get(),entry_color_1.get(),entry_color_2.get(),
-                        entry_nro_pasajeros.get(), entry_año_auto.get(), entry_combustible.get())).grid(row=5, column=2, padx=10, pady=10)
+    ctk.CTkLabel(contenedor, text="Color 1:").grid(row=3, column=0, padx=10, pady=10, sticky="e")
+    entry_color_1=ctk.CTkEntry(contenedor)
+    entry_color_1.grid(row=3, column=1, padx=5, pady=10, sticky="ew")
+
+    ctk.CTkLabel(contenedor, text="Color 2:").grid(row=3, column=2, padx=(50, 10), pady=10, sticky="e")
+    entry_color_2=ctk.CTkEntry(contenedor)
+    entry_color_2.grid(row=3, column=3, padx=5, pady=10, sticky="ew")
+
+    ctk.CTkLabel(contenedor, text="Número de pasajeros:").grid(row=4, column=0, padx=10, pady=10, sticky="e")
+    entry_nro_pasajeros=ctk.CTkEntry(contenedor)
+    entry_nro_pasajeros.grid(row=4, column=1, padx=5, pady=10, sticky="ew")
+
+    ctk.CTkLabel(contenedor, text="Año de fabricación:").grid(row=4, column=2, padx=(50, 10), pady=10, sticky="e")
+    entry_año_auto=ctk.CTkEntry(contenedor)
+    entry_año_auto.grid(row=4, column=3, padx=5, pady=10, sticky="ew")
+
+    ctk.CTkLabel(contenedor, text="Tipo de combustible:").grid(row=5, column=0, padx=10, pady=10, sticky="e")
+    entry_combustible=ctk.CTkEntry(contenedor)
+    entry_combustible.grid(row=5, column=1, padx=5, pady=10, sticky="ew")
+
+    ctk.CTkButton(
+        contenedor, text="Guardar", command=lambda:
+        guardar_datos_auto(
+            "Agregar", 
+            entry_código.get(),
+            entry_matrícula.get(), 
+            entry_descripción.get(),
+            entry_marca.get(),
+            entry_tipo.get(), 
+            entry_modelo.get(),
+            entry_color_1.get(),
+            entry_color_2.get(),
+            entry_nro_pasajeros.get(), 
+            entry_año_auto.get(), 
+            entry_combustible.get()
+        )
+    ).grid(row=6, column=0, columnspan=4, pady=10)
 
 
 #Método para crear la interfaz para modificar autos
@@ -281,11 +344,20 @@ def modificar_autos():
     entry_combustible.grid(row=5, column=3, padx=10, pady=10)
     
     ctk.CTkButton(ventana_modificar_auto, text="Guardar", command=lambda:
-    guardar_datos_auto("Modificar", entry_id_auto.get(),entry_código.get(),entry_matrícula.get(),
-                  entry_descripción.get(),entry_marca.get(),entry_tipo.get(),
-                  entry_modelo.get(),entry_color_1.get(),entry_color_2.get(),
-                  entry_nro_pasajeros.get(),entry_año_auto.get(),
-                  entry_combustible.get())).grid(row=6, column=0, columnspan=4, pady=10)
+    guardar_datos_auto("Modificar", 
+                       entry_id_auto.get(),
+                       entry_código.get(),
+                       entry_matrícula.get(),
+                       entry_descripción.get(),
+                       entry_marca.get(),
+                       entry_tipo.get(),
+                       entry_modelo.get(),
+                       entry_color_1.get(),
+                       entry_color_2.get(),
+                       entry_nro_pasajeros.get(),
+                       entry_año_auto.get(),
+                       entry_combustible.get())).grid(
+                           row=6, column=0, columnspan=4, pady=10)
 
 #Método para Cargar datos del Auto
     def cargar_dato_auto():
@@ -348,14 +420,35 @@ def eliminar_autos():
 def guardar_datos_auto(accion, código=None, matrícula=None, descripción=None, marca=None, tipo=None, modelo=None, color_1=None, color_2=None, nro_pasajeros=None, año_auto=None, combustible=None, id_auto=None):
     if accion=="Agregar":
         if código and matrícula and descripción and marca and tipo and modelo and color_1 and color_2 and nro_pasajeros and año_auto and combustible:
-            agregar_auto_db(código, matrícula, descripción, marca, tipo, modelo, color_1, color_2, nro_pasajeros, año_auto, combustible)
+            agregar_auto_db(código, 
+                            matrícula, 
+                            descripción,
+                            marca, 
+                            tipo, 
+                            modelo, 
+                            color_1, 
+                            color_2, 
+                            nro_pasajeros, 
+                            año_auto, 
+                            combustible)
             messagebox.showinfo("Éxito", "Auto agregado correctamente")
         else:
             messagebox.showwarning("Error", "Faltan datos para modigicar los datos del auto")
 
     elif accion=="Modificar":   
         if código and matrícula and descripción and marca and tipo and modelo and color_1 and color_2 and nro_pasajeros and año_auto and combustible and id_auto:
-            modificar_auto_db(código, matrícula, descripción, marca, tipo, modelo, color_1, color_2, nro_pasajeros, año_auto, combustible, id_auto)
+            modificar_auto_db(código, 
+                              matrícula, 
+                              descripción, 
+                              marca, 
+                              tipo, 
+                              modelo, 
+                              color_1, 
+                              color_2, 
+                              nro_pasajeros, 
+                              año_auto, 
+                              combustible, 
+                              id_auto)
             messagebox.showinfo("Éxito", "Auto modificado correctamente")
 
 def eliminar_datos_auto(accion, id_auto=None):
