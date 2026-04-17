@@ -10,12 +10,13 @@ from tkinter import PhotoImage, messagebox  #<- agraga el message box
 from Cliente import agregar_cliente_db, modificar_cliente_db, eliminar_cliente_db, obtener_cliente_db
 from auto import agregar_auto_db, modificar_auto_db, eliminar_auto_db, obtener_auto_db
 
-app=ctk.CTk()
-
 def crear_ventana_titulo(titulo):
     ventana_aux=ctk.CTkToplevel()
     ventana_aux.title(titulo)
     ventana_aux.geometry("750x400")
+    ventana_aux.grab_set()  # Evita que se pueda interactuar con la ventana principal
+    ventana_aux.configure(bg="lightblue")
+    ventana_aux.resizable(False, False)
     return ventana_aux
 
 #Método para crear la interfaz para agragar clientes
@@ -448,4 +449,3 @@ ventana.configure(menu=menu_principal)
 
 #Iniciar el bucle principal de la ventana
 ventana.mainloop()
-app.mainloop()
