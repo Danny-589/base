@@ -10,6 +10,7 @@ from tkinter import PhotoImage, messagebox  #<- agraga el message box
 from Cliente import agregar_cliente_db, modificar_cliente_db, eliminar_cliente_db, obtener_cliente_db
 from auto import agregar_auto_db, modificar_auto_db, eliminar_auto_db, obtener_auto_db
 
+
 def crear_ventana_titulo(titulo):
     ventana_aux=ctk.CTkToplevel()
     ventana_aux.title(titulo)
@@ -18,6 +19,9 @@ def crear_ventana_titulo(titulo):
     ventana_aux.configure(bg="lightblue")
     ventana_aux.resizable(True, True)
     return ventana_aux
+
+
+
 
 #Método para crear la interfaz para agragar clientes
 def agregar_cliente():
@@ -74,6 +78,9 @@ def agregar_cliente():
                   entry_correo.get(),
                   entry_fecha_nac.get())).grid(
                       row=4, column=0, columnspan=4, pady=10)
+
+
+
 
 #Método para crear la interfaz para modificar clientes
 def modificar_cliente():
@@ -136,6 +143,9 @@ def modificar_cliente():
                   entry_id.get()
                   )).grid(row=5, column=0, columnspan=4, pady=10)
 
+
+
+
 #Método para Cargar datos del cliente
     def cargar_dato_cliente():
         id_cliente=entry_id.get()
@@ -176,6 +186,8 @@ def modificar_cliente():
     ctk.CTkButton(contenedor, text="Buscar", command=cargar_dato_cliente).grid(row=6, column=0, columnspan=4, pady=5)
             
 
+
+
 #Método para crear la interfaz para eliminar clientes
 def eliminar_cliente():
     ventana_agregar=crear_ventana_titulo("Eliminar Cliente")
@@ -192,6 +204,8 @@ def eliminar_cliente():
     entry_id.grid(row=0, column=1, padx=10, pady=5)
     ctk.CTkButton(contenedor, text="Confirmar", command=lambda:
     eliminar_datos("Eliminar", entry_id.get())).grid(row=1, column=0, columnspan=2, pady=10)
+
+
 
 
 def guardar_datos(accion, 
@@ -231,6 +245,8 @@ def guardar_datos(accion,
                                  id)
             messagebox.showinfo("Éxito", "Cliente modificado correctamente")
 
+
+
 def eliminar_datos(accion, id=None):
     if accion=="Eliminar":
         if id:
@@ -238,6 +254,62 @@ def eliminar_datos(accion, id=None):
             messagebox.showinfo("Éxito", "Cliente eliminado correctamente")
         else:
             messagebox.showwarning("Error", "No existe cliente")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #Método para crear la interfaz para agragar autos
 def agregar_autos():
@@ -313,6 +385,329 @@ def agregar_autos():
             entry_nro_pasajeros.get(), 
             entry_año_auto.get(), 
             entry_combustible.get()
+        )
+    ).grid(row=6, column=0, columnspan=4, pady=10)
+
+
+
+
+#Método para crear la interfaz para modificar autos
+def modificar_autos():
+    ventana_modificar_auto=crear_ventana_titulo("Modificar Auto")
+
+    contenedor=ctk.CTkFrame(ventana_modificar_auto)
+    contenedor.pack(expand=True, fill="both", padx=100, pady=20)
+
+    contenedor.grid_columnconfigure(0, weight=1)
+    contenedor.grid_columnconfigure(1, weight=2)    
+    contenedor.grid_columnconfigure(2, weight=1)
+    contenedor.grid_columnconfigure(3, weight=2)
+
+    ctk.CTkLabel(contenedor, text="Id del Auto:").grid(row=0, column=0, padx=10, pady=10)
+    entry_id_auto=ctk.CTkEntry(contenedor)
+    entry_id_auto.grid(row=0, column=1, padx=80, pady=10)
+    
+    ctk.CTkLabel(contenedor, text="Código:").grid(row=0, column=2, padx=10, pady=10)
+    entry_código=ctk.CTkEntry(contenedor)
+    entry_código.grid(row=0, column=3, padx=10, pady=10)
+
+    ctk.CTkLabel(contenedor, text="Matrícula:").grid(row=1, column=0, padx=10, pady=10)
+    entry_matrícula=ctk.CTkEntry(contenedor)
+    entry_matrícula.grid(row=1, column=1, padx=80, pady=10)
+
+    ctk.CTkLabel(contenedor, text="Descripción:").grid(row=1, column=2, padx=10, pady=10)
+    entry_descripción=ctk.CTkEntry(contenedor)
+    entry_descripción.grid(row=1, column=3, padx=10, pady=10)
+
+    ctk.CTkLabel(contenedor, text="Marca:").grid(row=2, column=0, padx=10, pady=10)
+    entry_marca=ctk.CTkEntry(contenedor)
+    entry_marca.grid(row=2, column=1, padx=80, pady=10)
+
+    ctk.CTkLabel(contenedor, text="Tipo:").grid(row=2, column=2, padx=10, pady=10)
+    entry_tipo=ctk.CTkEntry(contenedor)
+    entry_tipo.grid(row=2, column=3, padx=10, pady=10)
+
+    ctk.CTkLabel(contenedor, text="Modelo:").grid(row=3, column=0, padx=10, pady=10)
+    entry_modelo=ctk.CTkEntry(contenedor)
+    entry_modelo.grid(row=3, column=1, padx=80, pady=10)
+
+    ctk.CTkLabel(contenedor, text="Color 1:").grid(row=3, column=2, padx=10, pady=10)
+    entry_color_1=ctk.CTkEntry(contenedor)
+    entry_color_1.grid(row=3, column=3, padx=10, pady=10)
+
+    ctk.CTkLabel(contenedor, text="Color 2:").grid(row=4, column=0, padx=10, pady=10)
+    entry_color_2=ctk.CTkEntry(contenedor)
+    entry_color_2.grid(row=4, column=1, padx=80, pady=10)
+
+    ctk.CTkLabel(contenedor, text="Número de pasajeros:").grid(row=4, column=2, padx=10, pady=10)
+    entry_nro_pasajeros=ctk.CTkEntry(contenedor)
+    entry_nro_pasajeros.grid(row=4, column=3, padx=10, pady=10)
+
+    ctk.CTkLabel(contenedor, text="Año de fabricación:").grid(row=5, column=0, padx=10, pady=10)
+    entry_año_auto=ctk.CTkEntry(contenedor)
+    entry_año_auto.grid(row=5, column=1, padx=80, pady=10)
+
+    ctk.CTkLabel(contenedor, text="Tipo de combustible:").grid(row=5, column=2, padx=10, pady=10)
+    entry_combustible=ctk.CTkEntry(contenedor)
+    entry_combustible.grid(row=5, column=3, padx=10, pady=10)
+    
+    ctk.CTkButton(contenedor, text="Guardar", command=lambda:
+    guardar_datos_auto("Modificar", 
+                       entry_id_auto.get(),
+                       entry_código.get(),
+                       entry_matrícula.get(),
+                       entry_descripción.get(),
+                       entry_marca.get(),
+                       entry_tipo.get(),
+                       entry_modelo.get(),
+                       entry_color_1.get(),
+                       entry_color_2.get(),
+                       entry_nro_pasajeros.get(),
+                       entry_año_auto.get(),
+                       entry_combustible.get())).grid(
+                           row=6, column=0, columnspan=4, pady=10)
+
+
+
+
+#Método para Cargar datos del Auto
+    def cargar_dato_auto():
+        id_auto=entry_id_auto.get()
+        if id_auto:
+            auto=obtener_auto_db(id_auto)
+            if auto:
+                entry_código.delete(0,tk.END)
+                entry_código.insert(0,auto[1])
+                
+                entry_matrícula.delete(0,tk.END)
+                entry_matrícula.insert(0,auto[2])
+
+                entry_descripción.delete(0,tk.END)
+                entry_descripción.insert(0,auto[3])
+                
+                entry_marca.delete(0,tk.END)
+                entry_marca.insert(0,auto[4])
+                
+                entry_tipo.delete(0,tk.END)
+                entry_tipo.insert(0,auto[5])
+                
+                entry_modelo.delete(0,tk.END)
+                entry_modelo.insert(0,auto[6])
+                
+                entry_color_1.delete(0,tk.END)
+                entry_color_1.insert(0,auto[7])
+                
+                entry_color_2.delete(0,tk.END)
+                entry_color_2.insert(0,auto[8])
+                
+                entry_nro_pasajeros.delete(0,tk.END)
+                entry_nro_pasajeros.insert(0,auto[9])
+                
+                entry_año_auto.delete(0,tk.END)
+                entry_año_auto.insert(0,auto[10])
+                
+                entry_combustible.delete(0,tk.END)
+                entry_combustible.insert(0,auto[11])
+
+            else:
+                messagebox.showerror("Error", "Auto no encontrado")
+        
+        else:
+            messagebox.showwarning("Atención", "Ingrese el Id del auto")
+
+
+
+#Botón Buscar
+    ctk.CTkButton(contenedor, text="Buscar", command=cargar_dato_auto).grid(row=7, column=0, columnspan=4, pady=10)
+            
+
+
+
+
+#Método para crear la interfaz para eliminar autos
+def eliminar_autos():
+    ventana_agregar_auto=crear_ventana_titulo("Eliminar Auto")
+
+    contenedor=ctk.CTkFrame(ventana_agregar_auto)
+    contenedor.pack(expand=True, fill="both", padx=100, pady=20)
+
+    contenedor.grid_columnconfigure(0, weight=1)
+    contenedor.grid_columnconfigure(1, weight=2)
+
+    ctk.CTkLabel(contenedor, text="Id del auto que desea borrar:").grid(row=0, column=0, padx=10, pady=10)
+    
+    entry_id_auto=ctk.CTkEntry(contenedor)
+    entry_id_auto.grid(row=1, column=0, padx=10, pady=10)
+    ctk.CTkButton(contenedor, text="Confirmar", command=lambda:
+    eliminar_datos_auto("Eliminar", entry_id_auto.get())).grid(row=2, column=0, columnspan=2, pady=10)
+
+
+
+
+def guardar_datos_auto(accion, código=None, matrícula=None, descripción=None, marca=None, tipo=None, modelo=None, color_1=None, color_2=None, nro_pasajeros=None, año_auto=None, combustible=None, id_auto=None):
+    if accion=="Agregar":
+        if código and matrícula and descripción and marca and tipo and modelo and color_1 and color_2 and nro_pasajeros and año_auto and combustible:
+            agregar_auto_db(código, 
+                            matrícula, 
+                            descripción,
+                            marca, 
+                            tipo, 
+                            modelo, 
+                            color_1, 
+                            color_2, 
+                            nro_pasajeros, 
+                            año_auto, 
+                            combustible)
+            messagebox.showinfo("Éxito", "Auto agregado correctamente")
+        else:
+            messagebox.showwarning("Error", "Faltan datos para modigicar los datos del auto")
+
+    elif accion=="Modificar":   
+        if código and matrícula and descripción and marca and tipo and modelo and color_1 and color_2 and nro_pasajeros and año_auto and combustible and id_auto:
+            modificar_auto_db(código, 
+                              matrícula, 
+                              descripción, 
+                              marca, 
+                              tipo, 
+                              modelo, 
+                              color_1, 
+                              color_2, 
+                              nro_pasajeros, 
+                              año_auto, 
+                              combustible, 
+                              id_auto)
+            messagebox.showinfo("Éxito", "Auto modificado correctamente")
+
+
+
+
+def eliminar_datos_auto(accion, id_auto=None):
+    if accion=="Eliminar":
+        if id_auto:
+            eliminar_auto_db(id_auto)
+            messagebox.showinfo("Éxito", "Auto eliminado correctamente")
+        else:
+            messagebox.showwarning("Error", "No existe auto")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Método para crear la interfaz para agragar autos
+def agregar_reg_alquiler():
+    ventana_agregar_reg_alquiler=crear_ventana_titulo("Agregar Registro de Alquiler")
+
+    contenedor=ctk.CTkFrame(ventana_agregar_reg_alquiler)
+    contenedor.pack(expand=True, fill="both", padx=100, pady=20)
+
+    contenedor.grid_columnconfigure(0, weight=1)
+    contenedor.grid_columnconfigure(1, weight=2)
+    contenedor.grid_columnconfigure(2, weight=1)
+    contenedor.grid_columnconfigure(3, weight=2)
+
+    ctk.CTkLabel(contenedor, text="Código de Alquiler:").grid(row=0, column=0, padx=10, pady=10, sticky="e")
+
+    entry_código_alquiler=ctk.CTkEntry(contenedor)
+    entry_código_alquiler.grid(row=0, column=1, padx=5, pady=10, sticky="ew")
+
+
+    ctk.CTkLabel(contenedor, text="Cédula del Cliente:").grid(row=0, column=2, padx=(50, 10), pady=10, sticky="e")
+    
+    entry_cédula_cliente=ctk.CTkEntry(contenedor)
+    entry_cédula_cliente.grid(row=0, column=3, padx=5, pady=10, sticky="ew")
+
+    ctk.CTkLabel(contenedor, text="Código del Auto:").grid(row=1, column=0, padx=10, pady=10, sticky="e")
+    entry_código_auto=ctk.CTkEntry(contenedor)
+    entry_código_auto.grid(row=1, column=1, padx=5, pady=10, sticky="ew")
+
+    ctk.CTkLabel(contenedor, text="Fecha de Alquiler:").grid(row=1, column=2, padx=(50, 10), pady=10, sticky="e")
+    entry_fecha_alquiler=ctk.CTkEntry(contenedor)
+    entry_fecha_alquiler.grid(row=1, column=3, padx=5, pady=10, sticky="ew")
+
+    ctk.CTkLabel(contenedor, text="Observaciones del Alquiler:").grid(row=2, column=0, padx=10, pady=10, sticky="e")
+    entry_observaciones_alquiler=ctk.CTkEntry(contenedor)
+    entry_observaciones_alquiler.grid(row=2, column=1, padx=5, pady=10, sticky="ew")
+
+    ctk.CTkLabel(contenedor, text="Estado de alquiler:").grid(row=2, column=2, padx=(50, 10), pady=10, sticky="e")
+    entry_estado_alquiler=ctk.CTkEntry(contenedor)
+    entry_estado_alquiler.grid(row=2, column=3, padx=5, pady=10, sticky="ew")
+
+    ctk.CTkLabel(contenedor, text="Kilometraje de alquiler:").grid(row=3, column=0, padx=10, pady=10, sticky="e")
+    entry_kilometraje_alquiler=ctk.CTkEntry(contenedor)
+    entry_kilometraje_alquiler.grid(row=3, column=1, padx=5, pady=10, sticky="ew")
+
+    ctk.CTkLabel(contenedor, text="Descripción del alquiler:").grid(row=3, column=2, padx=(50, 10), pady=10, sticky="e")
+    entry_descripción_alquiler=ctk.CTkEntry(contenedor)
+    entry_descripción_alquiler.grid(row=3, column=3, padx=5, pady=10, sticky="ew")
+
+    ctk.CTkLabel(contenedor, text="Valor del alquiler:").grid(row=4, column=0, padx=10, pady=10, sticky="e")
+    entry_valor_alquiler=ctk.CTkEntry(contenedor)
+    entry_valor_alquiler.grid(row=4, column=1, padx=5, pady=10, sticky="ew")
+
+    ctk.CTkButton(
+        contenedor, text="Guardar", command=lambda:
+        guardar_datos_auto(
+            "Agregar", 
+            entry_código_alquiler.get(),
+            entry_cédula_cliente.get(),
+            entry_código_auto.get(),
+            entry_fecha_alquiler.get(),
+            entry_observaciones_alquiler.get(),
+            entry_estado_alquiler.get(),
+            entry_kilometraje_alquiler.get(),
+            entry_descripción_alquiler.get(),
+            entry_valor_alquiler.get()
         )
     ).grid(row=6, column=0, columnspan=4, pady=10)
 
@@ -393,6 +788,9 @@ def modificar_autos():
                        entry_combustible.get())).grid(
                            row=6, column=0, columnspan=4, pady=10)
 
+
+
+
 #Método para Cargar datos del Auto
     def cargar_dato_auto():
         id_auto=entry_id_auto.get()
@@ -438,9 +836,14 @@ def modificar_autos():
         else:
             messagebox.showwarning("Atención", "Ingrese el Id del auto")
 
+
+
 #Botón Buscar
     ctk.CTkButton(contenedor, text="Buscar", command=cargar_dato_auto).grid(row=7, column=0, columnspan=4, pady=10)
             
+
+
+
 
 #Método para crear la interfaz para eliminar autos
 def eliminar_autos():
@@ -458,6 +861,9 @@ def eliminar_autos():
     entry_id_auto.grid(row=1, column=0, padx=10, pady=10)
     ctk.CTkButton(contenedor, text="Confirmar", command=lambda:
     eliminar_datos_auto("Eliminar", entry_id_auto.get())).grid(row=2, column=0, columnspan=2, pady=10)
+
+
+
 
 def guardar_datos_auto(accion, código=None, matrícula=None, descripción=None, marca=None, tipo=None, modelo=None, color_1=None, color_2=None, nro_pasajeros=None, año_auto=None, combustible=None, id_auto=None):
     if accion=="Agregar":
@@ -493,6 +899,9 @@ def guardar_datos_auto(accion, código=None, matrícula=None, descripción=None,
                               id_auto)
             messagebox.showinfo("Éxito", "Auto modificado correctamente")
 
+
+
+
 def eliminar_datos_auto(accion, id_auto=None):
     if accion=="Eliminar":
         if id_auto:
@@ -500,6 +909,63 @@ def eliminar_datos_auto(accion, id_auto=None):
             messagebox.showinfo("Éxito", "Auto eliminado correctamente")
         else:
             messagebox.showwarning("Error", "No existe auto")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def salir():
