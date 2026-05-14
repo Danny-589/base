@@ -6,8 +6,11 @@
 
 import tkinter as tk #se la utiliza para crear la interfaz grafica
 import customtkinter as ctk #Se la utiliza para dar un mejor diseño a la interfaz
+ctk.set_appearance_mode("dark")
+ctk.set_default_color_theme("dark-blue")
 from tkinter import PhotoImage, messagebox  #<- agraga el message box
-from Cliente import agregar_cliente_db, modificar_cliente_db, eliminar_cliente_db, obtener_cliente_db, consultar_cliente_db
+from tkinter import ttk  #<- para la tabla de modificar clientes
+from Cliente import agregar_cliente_db, modificar_cliente_db, eliminar_cliente_db, obtener_cliente_db, consultar_cliente_db, consultar_clientes_db
 from auto import agregar_auto_db, modificar_auto_db, eliminar_auto_db, obtener_auto_db, consultar_auto_db
 from alquiler import agregar_registro_db, modificar_registro_db, eliminar_registro_db, obtener_registro_db, consultar_registro_db
 
@@ -89,107 +92,197 @@ def agregar_cliente():
 #Método para crear la interfaz para modificar clientes
 def modificar_cliente():
     ventana_modificar=crear_ventana_titulo("Modificar Cliente")
-
-    contenedor=ctk.CTkFrame(ventana_modificar)
-    contenedor.pack(expand=True, fill="both", padx=100, pady=20)
-
-    contenedor.grid_columnconfigure(0, weight=1)
-    contenedor.grid_columnconfigure(1, weight=2)
-    contenedor.grid_columnconfigure(2, weight=1)
-    contenedor.grid_columnconfigure(3, weight=2)
-
-    ctk.CTkLabel(contenedor, text="Id del cliente:").grid(row=0, column=0, padx=10, pady=10)
-    entry_id=ctk.CTkEntry(contenedor)
-    entry_id.grid(row=0, column=1, padx=80, pady=10)
-    
-    ctk.CTkLabel(contenedor, text="Cédula:").grid(row=0, column=2, padx=10, pady=10)
-    entry_cedula=ctk.CTkEntry(contenedor)
-    entry_cedula.grid(row=0, column=3, padx=10, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Nombres:").grid(row=1, column=0, padx=10, pady=10)
-    entry_nombres=ctk.CTkEntry(contenedor)
-    entry_nombres.grid(row=1, column=1, padx=80, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Apellidos:").grid(row=1, column=2, padx=10, pady=10)
-    entry_apellidos=ctk.CTkEntry(contenedor)
-    entry_apellidos.grid(row=1, column=3, padx=10, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Sexo:").grid(row=2, column=0, padx=10, pady=10)
-    entry_sexo=ctk.CTkEntry(contenedor)
-    entry_sexo.grid(row=2, column=1, padx=80, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Dirección:").grid(row=2, column=2, padx=10, pady=10)
-    entry_direccion=ctk.CTkEntry(contenedor)
-    entry_direccion.grid(row=2, column=3, padx=10, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Teléfono:").grid(row=3, column=0, padx=10, pady=10)
-    entry_telefono=ctk.CTkEntry(contenedor)
-    entry_telefono.grid(row=3, column=1, padx=80, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Correo:").grid(row=3, column=2, padx=10, pady=10)
-    entry_correo=ctk.CTkEntry(contenedor)
-    entry_correo.grid(row=3, column=3, padx=10, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Fecha de nacimiento:").grid(row=4, column=0, padx=10, pady=10)
-    entry_fecha_nac=ctk.CTkEntry(contenedor)
-    entry_fecha_nac.grid(row=4, column=1, padx=80, pady=10)
-    
-    ctk.CTkButton(contenedor, text="Guardar", command=lambda:
-    guardar_datos("Modificar",
-                  entry_cedula.get(),
-                  entry_nombres.get(),
-                  entry_apellidos.get(),
-                  entry_sexo.get(),
-                  entry_direccion.get(),
-                  entry_telefono.get(),
-                  entry_correo.get(),
-                  entry_fecha_nac.get(),
-                  entry_id.get()
-                  )).grid(row=5, column=0, columnspan=4, pady=10)
+    ventana_modificar.geometry("1300x700")
 
 
+    # ---------- FRAME PRINCIPAL ----------
+    frame_principal = ctk.CTkFrame(ventana_modificar)
+    frame_principal.pack(fill="both", expand=True, padx=10, pady=10)
+
+    # ---------- FRAME IZQUIERDO (TABLA) ----------
+    frame_tabla = ctk.CTkFrame(frame_principal, corner_radius=15)
+    frame_tabla.grid(row=0, column=0, sticky="nsew", padx=10)
+
+    ctk.CTkLabel(
+        frame_tabla,
+        text="Seleccione un cliente de la tabla para cargar sus datos",
+        font=("Arial", 13),
+        text_color="lightgray"
+    ).grid(row=0, column=0, columnspan=2, pady=10)
+
+    # ---------- FRAME DERECHO (FORMULARIO) ----------
+    frame_form = ctk.CTkFrame(frame_principal, corner_radius=15)
+    frame_form.grid(row=0, column=1, sticky="nsew", padx=10)
+
+    frame_principal.columnconfigure(0, weight=1)
+    frame_principal.columnconfigure(1, weight=1)
 
 
-#Método para Cargar datos del cliente
-    def cargar_dato_cliente():
-        id_cliente=entry_id.get()
-        if id_cliente:
-            cliente=obtener_cliente_db(id_cliente)
+    # ---------- TABLA ----------
+    columnas = ("ID", "Cédula", "Nombres", "Apellidos")
+
+    style = ttk.Style()
+    style.theme_use("default")
+    style.configure(
+        "Treeview",
+        background="#1E1E1E",
+        foreground="white",
+        fieldbackground="#1E1E1E",
+        rowheight=30,
+        font=("Arial", 11)
+    )
+    style.map(
+        "Treeview",
+        background=[("selected", "#1A2452")],
+        foreground=[("selected", "white")]
+    )
+    style.configure(
+        "Treeview.Heading",
+        background="#111827",
+        foreground="white",
+        font=("Arial", 11, "bold")
+    )
+    tree = ttk.Treeview(
+        frame_tabla,
+        columns=columnas,
+        show="headings",
+        height=15
+    )
+
+    for col in columnas:
+        tree.heading(col, text=col)
+        tree.column(col, width=120, anchor="center")
+
+    # Scroll vertical
+    scroll = ttk.Scrollbar(
+        frame_tabla,
+        orient="vertical",
+        command=tree.yview
+    )
+
+    tree.configure(yscrollcommand=scroll.set)
+
+    tree.grid(row=1, column=0, sticky="nsew")
+    scroll.grid(row=1, column=1, sticky="ns")
+
+    frame_tabla.rowconfigure(1, weight=1)
+    frame_tabla.columnconfigure(0, weight=1)
+
+
+    # ---------- CARGAR DATOS EN TABLA ----------
+    def cargar_tabla():
+        for fila in tree.get_children():
+            tree.delete(fila)
+
+        clientes = consultar_clientes_db()
+
+        for cliente in clientes:
+            tree.insert(
+                "",
+                tk.END,
+                values=(cliente[0], cliente[1], cliente[2], cliente[3])
+            )
+
+    cargar_tabla()
+
+
+    # ---------- FORMULARIO ----------
+    def crear_campo(texto):
+        ctk.CTkLabel(
+            frame_form,
+            text=texto,
+            font=("Arial", 10, "bold")
+        ).pack(anchor="w", pady=2)
+
+        entry = ctk.CTkEntry(frame_form, width=175, height=35)
+        entry.pack(pady=2)
+
+        return entry
+
+    entry_id = crear_campo("ID")
+    entry_cedula = crear_campo("Cédula")
+    entry_nombres = crear_campo("Nombres")
+    entry_apellidos = crear_campo("Apellidos")
+    entry_sexo = crear_campo("Sexo")
+    entry_direccion = crear_campo("Dirección")
+    entry_telefono = crear_campo("Teléfono")
+    entry_correo = crear_campo("Correo")
+    entry_fecha_nac = crear_campo("Fecha nacimiento")
+
+
+    # ---------- CARGAR DESDE SELECCIÓN ----------
+    def seleccionar_fila(event):
+        seleccion = tree.selection()
+
+        if seleccion:
+            item = seleccion[0]
+            datos = tree.item(item, "values")
+
+            entry_id.delete(0, tk.END)
+            entry_id.insert(0, datos[0])
+
+            entry_cedula.delete(0, tk.END)
+            entry_cedula.insert(0, datos[1])
+
+            entry_nombres.delete(0, tk.END)
+            entry_nombres.insert(0, datos[2])
+
+            entry_apellidos.delete(0, tk.END)
+            entry_apellidos.insert(0, datos[3])
+
+
+            # 🔹 Cargar dirección desde BD
+            cliente = obtener_cliente_db(datos[0])
+
             if cliente:
-                entry_cedula.delete(0,tk.END)
-                entry_cedula.insert(0,cliente[1])
-                
-                entry_nombres.delete(0,tk.END)
-                entry_nombres.insert(0,cliente[2])
+                entry_sexo.delete(0, tk.END)
+                entry_sexo.insert(0, cliente[4])
 
-                entry_apellidos.delete(0,tk.END)
-                entry_apellidos.insert(0,cliente[3])
-                
-                entry_sexo.delete(0,tk.END)
-                entry_sexo.insert(0,cliente[4])
-                
-                entry_direccion.delete(0,tk.END)
-                entry_direccion.insert(0,cliente[5])
-                
-                entry_telefono.delete(0,tk.END)
-                entry_telefono.insert(0,cliente[6])
-                
-                entry_correo.delete(0,tk.END)
-                entry_correo.insert(0,cliente[7])
-                
-                entry_fecha_nac.delete(0,tk.END)
-                entry_fecha_nac.insert(0,cliente[8])
+                entry_direccion.delete(0, tk.END)
+                entry_direccion.insert(0, cliente[5])
 
-            else:
-                messagebox.showerror("Error", "Cliente no encontrado")
-        
-        else:
-            messagebox.showwarning("Atención", "Ingrese un ID")
+                entry_telefono.delete(0, tk.END)
+                entry_telefono.insert(0, cliente[6])
 
-#Botón Buscar
-    ctk.CTkButton(contenedor, text="Buscar", command=cargar_dato_cliente).grid(row=6, column=0, columnspan=4, pady=5)
-            
+                entry_correo.delete(0, tk.END)
+                entry_correo.insert(0, cliente[7])
 
+                entry_fecha_nac.delete(0, tk.END)
+                entry_fecha_nac.insert(0, cliente[8])
+
+    tree.bind("<<TreeviewSelect>>", seleccionar_fila)
+
+
+    # ---------- BOTÓN GUARDAR ----------
+    def guardar_y_actualizar():
+
+        guardar_datos(
+            "Modificar",
+            entry_cedula.get(),
+            entry_nombres.get(),
+            entry_apellidos.get(),
+            entry_sexo.get(),
+            entry_direccion.get(),
+            entry_telefono.get(),
+            entry_correo.get(),
+            entry_fecha_nac.get(),
+            entry_id.get()
+        )
+
+        cargar_tabla()  # 🔄 refresca la tabla
+
+
+    ctk.CTkButton(
+        ventana_modificar,
+        text="Guardar",
+        width=175,
+        corner_radius=10,
+        height=40,
+        font=("Arial", 14, "bold"),
+        fg_color="#1A2452",
+        hover_color="#111827",
+        command=guardar_y_actualizar
+    ).pack(pady=20)
 
 
 #Método para crear la interfaz para eliminar clientes

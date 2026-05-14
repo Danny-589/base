@@ -75,3 +75,28 @@ def consultar_cliente_db(id):
     conexion.close()
     
     return clientes
+
+#Método para obtener TODOS los clientes
+def consultar_clientes_db():
+    try:
+        conexion = conectar_con_base_datos()
+        cursor = conexion.cursor()
+
+        query = """
+        SELECT id_cliente, ced_cliente, nom_cliente, ape_cliente
+        FROM cliente
+        """
+
+        cursor.execute(query)
+
+        resultados = cursor.fetchall()
+
+        return resultados
+
+    except Exception as e:
+        print(f"Error al consultar clientes: {e}")
+        return []
+
+    finally:
+        cursor.close()
+        conexion.close()
