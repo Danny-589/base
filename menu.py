@@ -11,7 +11,7 @@ ctk.set_default_color_theme("dark-blue")
 from tkinter import PhotoImage, messagebox  #<- agraga el message box
 from tkinter import ttk  #<- para la tabla de modificar clientes
 from Cliente import agregar_cliente_db, modificar_cliente_db, eliminar_cliente_db, obtener_cliente_db, consultar_cliente_db, consultar_clientes_db
-from auto import agregar_auto_db, modificar_auto_db, eliminar_auto_db, obtener_auto_db, consultar_auto_db
+from auto import agregar_auto_db, modificar_auto_db, eliminar_auto_db, obtener_auto_db, consultar_auto_db, consultar_autos_db
 from alquiler import agregar_registro_db, modificar_registro_db, eliminar_registro_db, obtener_registro_db, consultar_registro_db
 
 
@@ -194,7 +194,10 @@ def modificar_cliente():
             font=("Arial", 10, "bold")
         ).pack(anchor="w", pady=2)
 
-        entry = ctk.CTkEntry(frame_form, width=175, height=35)
+        entry = ctk.CTkEntry(
+            frame_form, 
+            width=175, 
+            height=35)
         entry.pack(pady=2)
 
         return entry
@@ -353,8 +356,7 @@ def guardar_datos(accion,
                                correo, 
                                fecha_nac)
             messagebox.showinfo("Éxito", "Cliente agregado correctamente")
-        else:
-            messagebox.showwarning("Error", "Faltan datos para modificar cliente")
+
 
     elif accion=="Modificar":   
         if cedula and nombres and apellidos and sexo and direccion and telefono and correo and fecha_nac and id:
@@ -367,7 +369,6 @@ def guardar_datos(accion,
                                  correo, 
                                  fecha_nac, 
                                  id)
-            messagebox.showinfo("Éxito", "Cliente modificado correctamente")
 
 
 
@@ -515,137 +516,224 @@ def agregar_autos():
 
 
 
-#Método para crear la interfaz para modificar autos
-def modificar_autos():
-    ventana_modificar_auto=crear_ventana_titulo("Modificar Auto")
 
-    contenedor=ctk.CTkFrame(ventana_modificar_auto)
-    contenedor.pack(expand=True, fill="both", padx=100, pady=20)
-
-    contenedor.grid_columnconfigure(0, weight=1)
-    contenedor.grid_columnconfigure(1, weight=2)    
-    contenedor.grid_columnconfigure(2, weight=1)
-    contenedor.grid_columnconfigure(3, weight=2)
-
-    ctk.CTkLabel(contenedor, text="Id del Auto:").grid(row=0, column=0, padx=10, pady=10)
-    entry_id_auto=ctk.CTkEntry(contenedor)
-    entry_id_auto.grid(row=0, column=1, padx=80, pady=10)
-    
-    ctk.CTkLabel(contenedor, text="Código:").grid(row=0, column=2, padx=10, pady=10)
-    entry_código=ctk.CTkEntry(contenedor)
-    entry_código.grid(row=0, column=3, padx=10, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Matrícula:").grid(row=1, column=0, padx=10, pady=10)
-    entry_matrícula=ctk.CTkEntry(contenedor)
-    entry_matrícula.grid(row=1, column=1, padx=80, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Descripción:").grid(row=1, column=2, padx=10, pady=10)
-    entry_descripción=ctk.CTkEntry(contenedor)
-    entry_descripción.grid(row=1, column=3, padx=10, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Marca:").grid(row=2, column=0, padx=10, pady=10)
-    entry_marca=ctk.CTkEntry(contenedor)
-    entry_marca.grid(row=2, column=1, padx=80, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Tipo:").grid(row=2, column=2, padx=10, pady=10)
-    entry_tipo=ctk.CTkEntry(contenedor)
-    entry_tipo.grid(row=2, column=3, padx=10, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Modelo:").grid(row=3, column=0, padx=10, pady=10)
-    entry_modelo=ctk.CTkEntry(contenedor)
-    entry_modelo.grid(row=3, column=1, padx=80, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Color 1:").grid(row=3, column=2, padx=10, pady=10)
-    entry_color_1=ctk.CTkEntry(contenedor)
-    entry_color_1.grid(row=3, column=3, padx=10, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Color 2:").grid(row=4, column=0, padx=10, pady=10)
-    entry_color_2=ctk.CTkEntry(contenedor)
-    entry_color_2.grid(row=4, column=1, padx=80, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Número de pasajeros:").grid(row=4, column=2, padx=10, pady=10)
-    entry_nro_pasajeros=ctk.CTkEntry(contenedor)
-    entry_nro_pasajeros.grid(row=4, column=3, padx=10, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Año de fabricación:").grid(row=5, column=0, padx=10, pady=10)
-    entry_año_auto=ctk.CTkEntry(contenedor)
-    entry_año_auto.grid(row=5, column=1, padx=80, pady=10)
-
-    ctk.CTkLabel(contenedor, text="Tipo de combustible:").grid(row=5, column=2, padx=10, pady=10)
-    entry_combustible=ctk.CTkEntry(contenedor)
-    entry_combustible.grid(row=5, column=3, padx=10, pady=10)
-    
-    ctk.CTkButton(contenedor, text="Guardar", command=lambda:
-    guardar_datos_auto("Modificar", 
-                       entry_id_auto.get(),
-                       entry_código.get(),
-                       entry_matrícula.get(),
-                       entry_descripción.get(),
-                       entry_marca.get(),
-                       entry_tipo.get(),
-                       entry_modelo.get(),
-                       entry_color_1.get(),
-                       entry_color_2.get(),
-                       entry_nro_pasajeros.get(),
-                       entry_año_auto.get(),
-                       entry_combustible.get())).grid(
-                           row=6, column=0, columnspan=4, pady=10)
+#Método para crear la interfaz de modificar auto    
+def modificar_auto():
+    ventana_modificar = crear_ventana_titulo("Modificar Auto")
+    ventana_modificar.geometry("1300x700")
 
 
+    # ---------- FRAME PRINCIPAL ----------
+    frame_principal = ctk.CTkFrame(ventana_modificar)
+    frame_principal.pack(fill="both", expand=True, padx=10, pady=10)
+
+    # ---------- FRAME IZQUIERDO ----------
+    frame_tabla = ctk.CTkFrame(frame_principal, corner_radius=15)
+    frame_tabla.grid(row=0, column=0, sticky="nsew", padx=10)
+
+    ctk.CTkLabel(
+        frame_tabla,
+        text="Seleccione un auto de la tabla para cargar sus datos",
+        font=("Arial", 13),
+        text_color="lightgray"
+    ).grid(row=0, column=0, columnspan=2, pady=10)
+
+    # ---------- FRAME DERECHO ----------
+    frame_form = ctk.CTkFrame(frame_principal, corner_radius=15)
+    frame_form.grid(row=0, column=1, sticky="nsew", padx=10)
+
+    frame_principal.columnconfigure(0, weight=1)
+    frame_principal.columnconfigure(1, weight=1)
 
 
-#Método para Cargar datos del Auto
-    def cargar_dato_auto():
-        id_auto=entry_id_auto.get()
-        if id_auto:
-            auto=obtener_auto_db(id_auto)
+    # ---------- TABLA ----------
+    columnas = ("ID", "Código", "Matrícula", "Descripción")
+
+    style = ttk.Style()
+    style.theme_use("default")
+    style.configure(
+        "Treeview",
+        background="#1E1E1E",
+        foreground="white",
+        fieldbackground="#1E1E1E",
+        rowheight=30,
+        font=("Arial",11)
+    )
+    style.map(
+        "Treeview",
+        background=[("selected","#1A2452")],
+        foreground=[("selected","white")]
+    )
+
+    style.configure(
+        "Treeview.Heading",
+        background="#111827",
+        foreground="white",
+        font=("Arial",11,"bold")
+    )
+    tree=ttk.Treeview(
+        frame_tabla,
+        columns=columnas,
+        show="headings",
+        height=15
+    )
+
+    for col in columnas:
+        tree.heading(col,text=col)
+        tree.column(col,width=120,anchor="center")
+
+    #Scroll vertical
+    scroll=ttk.Scrollbar(
+        frame_tabla,
+        orient="vertical",
+        command=tree.yview
+    )
+
+    tree.configure(yscrollcommand=scroll.set)
+
+    tree.grid(row=1,column=0,sticky="nsew")
+    scroll.grid(row=1,column=1,sticky="ns")
+
+    frame_tabla.rowconfigure(1,weight=1)
+    frame_tabla.columnconfigure(0,weight=1)
+
+    # ---------- CARGAR TABLA ----------
+    def cargar_tabla():
+
+        for fila in tree.get_children():
+            tree.delete(fila)
+
+        autos=consultar_autos_db()
+
+        for auto in autos:
+            tree.insert(
+                "",
+                tk.END,
+                values=(auto[0],auto[1],auto[2],auto[3])
+            )
+
+    cargar_tabla()
+
+
+    # ---------- FORMULARIO ----------
+    def crear_campo(texto):
+
+        ctk.CTkLabel(
+            frame_form,
+            text=texto,
+            font=("Arial",10,"bold")
+        ).pack(anchor="w",pady=2)
+
+        entry=ctk.CTkEntry(
+            frame_form,
+            width=175,
+            height=25)
+        entry.pack(pady=2)
+
+        return entry
+
+
+    entry_id=crear_campo("ID")
+    entry_codigo=crear_campo("Código")
+    entry_matricula=crear_campo("Matrícula")
+    entry_descripcion=crear_campo("Descripción")
+    entry_marca=crear_campo("Marca")
+    entry_tipo=crear_campo("Tipo")
+    entry_modelo=crear_campo("Modelo")
+    entry_color_1=crear_campo("Color 1")
+    entry_color_2=crear_campo("Color 2")
+    entry_nro_pasajeros=crear_campo("N° pasajeros")
+    entry_año_auto=crear_campo("Año")
+    entry_combustible=crear_campo("Combustible")
+
+
+    # ---------- SELECCIONAR FILA ----------
+    def seleccionar_fila(event):
+        seleccion=tree.selection()
+
+        if seleccion:
+            item=seleccion[0]
+            datos=tree.item(item,"values")
+
+            entry_id.delete(0,tk.END)
+            entry_id.insert(0,datos[0])
+
+            entry_codigo.delete(0,tk.END)
+            entry_codigo.insert(0,datos[1])
+
+            entry_matricula.delete(0,tk.END)
+            entry_matricula.insert(0,datos[2])
+
+            entry_descripcion.delete(0,tk.END)
+            entry_descripcion.insert(0,datos[3])
+
+
+
+            #cargar dirección desde la BDD
+            auto=obtener_auto_db(datos[0])
+
             if auto:
-                entry_código.delete(0,tk.END)
-                entry_código.insert(0,auto[1])
-                
-                entry_matrícula.delete(0,tk.END)
-                entry_matrícula.insert(0,auto[2])
 
-                entry_descripción.delete(0,tk.END)
-                entry_descripción.insert(0,auto[3])
-                
                 entry_marca.delete(0,tk.END)
                 entry_marca.insert(0,auto[4])
-                
+
                 entry_tipo.delete(0,tk.END)
                 entry_tipo.insert(0,auto[5])
-                
+
                 entry_modelo.delete(0,tk.END)
                 entry_modelo.insert(0,auto[6])
-                
+
                 entry_color_1.delete(0,tk.END)
                 entry_color_1.insert(0,auto[7])
-                
+
                 entry_color_2.delete(0,tk.END)
                 entry_color_2.insert(0,auto[8])
-                
+
                 entry_nro_pasajeros.delete(0,tk.END)
                 entry_nro_pasajeros.insert(0,auto[9])
-                
+
                 entry_año_auto.delete(0,tk.END)
                 entry_año_auto.insert(0,auto[10])
-                
+
                 entry_combustible.delete(0,tk.END)
                 entry_combustible.insert(0,auto[11])
 
-            else:
-                messagebox.showerror("Error", "Auto no encontrado")
-        
-        else:
-            messagebox.showwarning("Atención", "Ingrese el Id del auto")
+    tree.bind("<<TreeviewSelect>>", seleccionar_fila)
 
 
+    # ---------- GUARDAR ----------
+    def guardar_y_actualizar():
 
-#Botón Buscar
-    ctk.CTkButton(contenedor, text="Buscar", command=cargar_dato_auto).grid(row=7, column=0, columnspan=4, pady=10)
-            
+        guardar_datos_auto(
+            "Modificar",
+            entry_codigo.get(),
+            entry_matricula.get(),
+            entry_descripcion.get(),
+            entry_marca.get(),
+            entry_tipo.get(),
+            entry_modelo.get(),
+            entry_color_1.get(),
+            entry_color_2.get(),
+            entry_nro_pasajeros.get(),
+            entry_año_auto.get(),
+            entry_combustible.get(),
+            entry_id.get()
+        )
+
+        cargar_tabla()
 
 
+    ctk.CTkButton(
+        ventana_modificar,
+        text="Guardar",
+        width=175,
+        corner_radius=10,
+        height=40,
+        font=("Arial",14,"bold"),
+        fg_color="#1A2452",
+        hover_color="#111827",
+        command=guardar_y_actualizar
+    ).pack(pady=20)
 
 
 #Método para crear la interfaz para eliminar autos
@@ -712,8 +800,7 @@ def guardar_datos_auto(accion, código=None, matrícula=None, descripción=None,
                             año_auto, 
                             combustible)
             messagebox.showinfo("Éxito", "Auto agregado correctamente")
-        else:
-            messagebox.showwarning("Error", "Faltan datos para modigicar los datos del auto")
+
 
     elif accion=="Modificar":   
         if código and matrícula and descripción and marca and tipo and modelo and color_1 and color_2 and nro_pasajeros and año_auto and combustible and id_auto:
@@ -729,7 +816,7 @@ def guardar_datos_auto(accion, código=None, matrícula=None, descripción=None,
                               año_auto, 
                               combustible, 
                               id_auto)
-            messagebox.showinfo("Éxito", "Auto modificado correctamente")
+
 
 
 
@@ -1181,7 +1268,7 @@ menu_principal.add_cascade(label="Clientes", menu=menu_clientes)
 #Crear el menú autos
 menu_autos = tk.Menu(menu_principal,tearoff=0)
 menu_autos.add_command(label="Agregar", font=("arial", 10), command=agregar_autos)
-menu_autos.add_command(label="Modificar", font=("arial", 10), command=modificar_autos)
+menu_autos.add_command(label="Modificar", font=("arial", 10), command=modificar_auto)
 menu_autos.add_command(label="Eliminar", font=("arial", 10), command=eliminar_autos)
 menu_autos.add_command(label="Consultar", font=("arial", 10), command=consultar_autos)
 menu_principal.add_cascade(label="Autos", menu=menu_autos)
